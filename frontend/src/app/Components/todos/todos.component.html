@@ -1,0 +1,6 @@
+<ul *ngFor="let todo of todos" class="list-group">
+  <li class="list-group-item">
+    <!-- {{ todo.sno }} - {{ todo.title }} - {{ todo.desc }} - {{ todo.active }} -->
+    <app-todo-item [todo]="todo" (todoDelete)="deleteTodo($event)"></app-todo-item>
+  </li>
+</ul>
