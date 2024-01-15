@@ -6,7 +6,7 @@ namespace backend.Interfaces;
 public interface ITodoServices
 {
     Task<List<GetAllTodoResponse>> GetAllTodo();
-    Task<GetTodoResponse> AddTodo(AddTodoRequest request);
+    Task<GetTodoResponse> AddTodo(AddTodoRequest request, int currentUserId);
     Task<GetTodoResponse> MarkTodo(int id);
-    Task<string> DeleteTodo(int id);
+    Task<GeneralResponse> DeleteTodo(int id);
 }

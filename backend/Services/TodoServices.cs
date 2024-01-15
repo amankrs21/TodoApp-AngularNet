@@ -17,63 +17,65 @@ public class TodoServices : ITodoServices
 
     public async Task<List<GetAllTodoResponse>> GetAllTodo()
     {
+        if (_context.Todos == null) throw new Exception("No todo found");
         var todos = await _context.Todos.Select(t => new GetAllTodoResponse
         {
-            id = t.id,
-            title = t.title,
-            description = t.description,
-            isDone = t.isDone,
-            createdAt = t.createdAt
+            id = t.Id,
+            title = t.Title,
+            description = t.Description,
+            isDone = t.IsDone,
+            createdAt = t.CreatedAt
         }).ToListAsync();
-        if (todos.Count == 0)
-            throw new Exception("No todo found");
         return todos;
     }
 
-    public async Task<GetTodoResponse> AddTodo(AddTodoRequest request)
+    public async Task<GetTodoResponse> AddTodo(AddTodoRequest request, int currentUserId)
     {
         var todo = new Todo
         {
-            title = request.title,
-            description = request.description,
-            isDone = false
+            Title = request.title,
+            Description = request.description,
+            IsDone = false,
+            CreatedBy = currentUserId,
         };
-        _context.Todos.Add(todo);
+        _context.Todos?.Add(todo);
         await _context.SaveChangesAsync();
         
         return new GetTodoResponse
         {
-            id = todo.id,
-            title = todo.title,
-            description = todo.description,
-            isDone = todo.isDone,
-            createdAt = todo.createdAt
+            id = todo.Id,
+            title = todo.Title,
+            description = todo.Description,
+            isDone = todo.IsDone,
+            createdAt = todo.CreatedAt
         };
     }
 
     public async Task<GetTodoResponse> MarkTodo(int id)
     {
-        var todo = await _context.Todos.FirstOrDefaultAsync(t => t.id == id) 
+        if (_context.Todos == null) throw new Exception("No todo found");
+        var todo = await _context.Todos.FirstOrDefaultAsync(t => t.Id == id) 
                    ?? throw new Exception("Todo not found");
-        todo.isDone = !todo.isDone;
+        todo.IsDone = !todo.IsDone;
         await _context.SaveChangesAsync();
         return new GetTodoResponse
         {
-            id = todo.id,
-            title = todo.title,
-            description = todo.description,
-            isDone = todo.isDone,
-            createdAt = todo.createdAt
+            id = todo.Id,
+            title = todo.Title,
+            description = todo.Description,
+            isDone = todo.IsDone,
+            createdAt = todo.CreatedAt
         };
     }
 
-    public async Task<string> DeleteTodo(int id)
+    public async Task<GeneralResponse> DeleteTodo(int id)
     {
-        var todo = await _context.Todos.FirstOrDefaultAsync(t => t.id == id) 
+        if (_context.Todos == null) throw new Exception("No todo found");
+        var todo = await _context.Todos.FirstOrDefaultAsync(t => t.Id == id) 
                    ?? throw new Exception("Todo not found");
         _context.Todos.Remove(todo);
         await _context.SaveChangesAsync();
         
-        return "Todo Deleted Successfully!!";
+        return new GeneralResponse{message = "Todo Deleted Successfully!!"};
     }
 }

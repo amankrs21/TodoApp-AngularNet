@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <h4 [ngClass]="{ 'strike': todo.isDone }">
+    {{ todo.title }}
+    <small class="text-body-secondary">
+      ({{ todo.isDone ? "Inactive" : "Active" }})
+    </small>
+  </h4>
+  <p [ngClass]="{ strike: todo.isDone }">{{ todo.description }}</p>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="button" class="btn btn-outline-success" (click)="onUpdate()">
+      {{ todo.isDone ? "Active" : "Inactive" }}
+    </button>
+    <button type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
+  </div>
+</div>

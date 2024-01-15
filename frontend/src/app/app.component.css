@@ -1,4 +1,18 @@
-/* .navbar {
-    background-color: #4825e0 !important;
-    color: #ffffff !important;
-} */
+.navbar {
+    overflow: auto;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+.other-body {
+    margin-top: 70px !important;
+}
+
+.router-link-active {
+    border-radius: 8px;
+    font-weight: 500;
+    border: 2px solid #3dd349;
+}

@@ -1,0 +1,17 @@
+<div class="container-lg my-3">
+  <h3>Add a Todo</h3>
+  <app-todo-add (todoAdd)="addTodo($event)"></app-todo-add>
+  <h3 class="my-3">Todo's Items</h3>
+  <div *ngIf="this.todos.length === 0; else elseBlock">No Todo to display</div>
+  <ng-template #elseBlock>
+    <ul *ngFor="let todo of filteredTodos" class="list-group">
+      <li class="list-group-item my-1">
+        <app-todo-item
+          [todo]="todo"
+          (todoUpdate)="updateTodo($event)"
+          (todoDelete)="deleteTodo($event)"
+        ></app-todo-item>
+      </li>
+    </ul>
+  </ng-template>
+</div>

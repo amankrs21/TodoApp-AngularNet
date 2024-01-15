@@ -31,3 +31,4 @@ obj/
 # System files
 .DS_Store
 Thumbs.db
+Migrations/
