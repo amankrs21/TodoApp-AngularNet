@@ -3,11 +3,10 @@ using backend.Interfaces;
 using backend.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using backend.Helper;
-using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers;
 
-[ApiController, Authorize, Route("todo")]
+[ApiController, Route("todo")]
 public class TodoController : ControllerBase
 {
     private readonly ITodoServices _todoServices;
@@ -20,7 +19,7 @@ public class TodoController : ControllerBase
     [HttpGet, Route("all")]
     public async Task<IActionResult> GetAllTodo()
     {
-        return Ok(await _todoServices.GetAllTodo());
+        return Ok(await _todoServices.GetAllTodo(JwtMiddleware.GetUserId(HttpContext)));
     }
 
     [HttpPost, Route("add")]

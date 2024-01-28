@@ -13,11 +13,11 @@ export class TodoItemComponent {
   @Output() todoUpdate: EventEmitter<any> = new EventEmitter();
   @Output() todoDelete: EventEmitter<any> = new EventEmitter();
 
-  onUpdate(){
+  onUpdate() {
     this.todoUpdate.emit(this.todo);
   }
 
-  onDelete(){
+  onDelete() {
     this.todoDelete.emit(this.todo);
   }
 }

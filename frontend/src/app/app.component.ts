@@ -35,7 +35,7 @@ export class AppComponent {
     return this.http.post<T>(fullUrl, data, { headers: this.headers, withCredentials: true });
   }
 
-  patch<T>(url: string, data: any,  params?: HttpParams): Observable<T> {
+  patch<T>(url: string, data: any, params?: HttpParams): Observable<T> {
     const fullUrl = this.getFullUrl(url);
     const urlWithParams = params ? `${fullUrl}?${params.toString()}` : fullUrl;
     return this.http.patch<T>(urlWithParams, data, { headers: this.headers, withCredentials: true });

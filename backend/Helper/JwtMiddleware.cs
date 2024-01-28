@@ -21,25 +21,31 @@ public class JwtMiddleware
     public async Task Invoke(HttpContext context)
     {
         var path = context.Request.Path;
-        if (path.Equals("/auth/login", StringComparison.OrdinalIgnoreCase))
+
+        if (IsExcludedPath(path))
         {
             await _next(context);
             return;
         }
 
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        if (token != null)
+
+        if (token != null && IsValidToken(token))
         {
-            if (IsValidToken(token))
-            {
-                await _next(context);
-                return;
-            }
+            await _next(context);
+            return;
         }
 
         // Token is invalid or missing
         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         await context.Response.WriteAsync("Unauthorized");
+    }
+
+    private bool IsExcludedPath(string path)
+    {
+        // Add paths that should be excluded from token validation
+        var excludedPaths = new[] { "/auth/login", "/auth/register" };
+        return excludedPaths.Contains(path);
     }
 
     private bool IsValidToken(string token)
@@ -67,7 +73,7 @@ public class JwtMiddleware
             return false;
         }
     }
-    
+
     public static int GetUserId(HttpContext context)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -76,11 +82,13 @@ public class JwtMiddleware
         {
             return 0;
         }
+
         try
         {
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
             var userIdClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type == "id");
+
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
             {
                 return userId;
@@ -90,6 +98,7 @@ public class JwtMiddleware
         {
             // Handle exceptions if token validation fails
         }
+
         return 0;
     }
 }

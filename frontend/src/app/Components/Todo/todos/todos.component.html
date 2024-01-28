@@ -1,4 +1,5 @@
-<div class="container-lg my-3">
+<app-dashboard></app-dashboard><br />
+<div class="container-lg mt-5">
   <h3>Add a Todo</h3>
   <app-todo-add (todoAdd)="addTodo($event)"></app-todo-add>
   <h3 class="my-3">Todo's Items</h3>
@@ -6,11 +7,8 @@
   <ng-template #elseBlock>
     <ul *ngFor="let todo of filteredTodos" class="list-group">
       <li class="list-group-item my-1">
-        <app-todo-item
-          [todo]="todo"
-          (todoUpdate)="updateTodo($event)"
-          (todoDelete)="deleteTodo($event)"
-        ></app-todo-item>
+        <app-todo-item [todo]="todo" (todoUpdate)="updateTodo($event)"
+          (todoDelete)="deleteTodo($event)"></app-todo-item>
       </li>
     </ul>
   </ng-template>

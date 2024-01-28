@@ -1,13 +1,12 @@
-﻿using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using backend.Interfaces;
+﻿using System.Text;
 using backend.Models;
+using backend.Interfaces;
+using System.Security.Claims;
 using backend.Models.Requests;
+using backend.Models.Response;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TodoApi.Models.Response;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Services;
 
@@ -26,11 +25,12 @@ public class UserServices : IUserServices
     {
         var user = await _context.Users!.SingleOrDefaultAsync(u => u.Username == request.username)
                    ?? throw new Exception("Username or password is incorrect");
+
         if (!BCrypt.Net.BCrypt.Verify(request.password, user.Password))
             throw new Exception("Username or password is incorrect");
 
         if (!user.IsActive) throw new Exception("User is not active");
-        
+
         var token = GenerateJwtToken(user);
 
         return new LoginResponse
@@ -48,10 +48,13 @@ public class UserServices : IUserServices
             Password = BCrypt.Net.BCrypt.HashPassword(request.password),
             Name = request.name,
             IsAdmin = false,
-            IsActive = true
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
         };
+
         _context.Users?.Add(user);
         await _context.SaveChangesAsync();
+
         return new RegisterResponse
         {
             UserId = user.Id,
@@ -60,6 +63,13 @@ public class UserServices : IUserServices
             IsActive = user.IsActive,
             CreatedAt = user.CreatedAt
         };
+    }
+
+    public Task Logout()
+    {
+        // Perform any logout-related actions (e.g., revoke tokens, update user status)
+        // This method could be extended based on your specific requirements
+        return Task.CompletedTask;
     }
 
     private JwtSecurityToken GenerateJwtToken(Users user)
@@ -77,7 +87,7 @@ public class UserServices : IUserServices
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.UtcNow.AddMinutes(30),
             signingCredentials: credentials
         );
     }

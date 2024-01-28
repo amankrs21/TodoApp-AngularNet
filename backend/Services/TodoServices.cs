@@ -2,7 +2,7 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Models.Requests;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Models.Response;
+using backend.Models.Response;
 
 namespace backend.Services;
 
@@ -15,18 +15,17 @@ public class TodoServices : ITodoServices
         _context = context;
     }
 
-    public async Task<List<GetAllTodoResponse>> GetAllTodo()
+    public async Task<List<GetAllTodoResponse>> GetAllTodo(int currentUserId)
     {
-        if (_context.Todos == null) throw new Exception("No todo found");
-        var todos = await _context.Todos.Select(t => new GetAllTodoResponse
+        var todos = await _context.Todos!.Where(t => t.CreatedBy == currentUserId).ToListAsync();
+        return todos.Select(todo => new GetAllTodoResponse
         {
-            id = t.Id,
-            title = t.Title,
-            description = t.Description,
-            isDone = t.IsDone,
-            createdAt = t.CreatedAt
-        }).ToListAsync();
-        return todos;
+            id = todo.Id,
+            title = todo.Title,
+            description = todo.Description,
+            isDone = todo.IsDone,
+            createdAt = todo.CreatedAt
+        }).ToList();
     }
 
     public async Task<GetTodoResponse> AddTodo(AddTodoRequest request, int currentUserId)
@@ -53,8 +52,7 @@ public class TodoServices : ITodoServices
 
     public async Task<GetTodoResponse> MarkTodo(int id)
     {
-        if (_context.Todos == null) throw new Exception("No todo found");
-        var todo = await _context.Todos.FirstOrDefaultAsync(t => t.Id == id) 
+        var todo = await _context.Todos!.FirstOrDefaultAsync(t => t.Id == id ) 
                    ?? throw new Exception("Todo not found");
         todo.IsDone = !todo.IsDone;
         await _context.SaveChangesAsync();

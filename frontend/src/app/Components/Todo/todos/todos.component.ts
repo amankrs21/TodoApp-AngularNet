@@ -6,13 +6,14 @@ import { HttpParams } from '@angular/common/http';
 import { TodoSearchService } from '../../../Services/todo-search.service';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { TodoAddComponent } from '../todo-add/todo-add.component';
+import { DashboardComponent } from "../../dashboard/dashboard.component";
 
 @Component({
   selector: 'app-todos',
   standalone: true,
-  imports: [JsonPipe, CommonModule, TodoItemComponent, TodoAddComponent],
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.css']
+  styleUrls: ['./todos.component.css'],
+  imports: [JsonPipe, CommonModule, TodoItemComponent, TodoAddComponent, DashboardComponent]
 })
 export class TodosComponent implements OnInit {
   todos: any[] = [];
@@ -40,7 +41,7 @@ export class TodosComponent implements OnInit {
     await this.fetchTodos();
     this.toastr.info('Todo Updated Successfully!!');
   }
-  
+
   async deleteTodo(todo: any): Promise<void> {
     const params = new HttpParams().set('Id', todo.id);
     await this.httpApiService.delete('todo/delete', params).toPromise();

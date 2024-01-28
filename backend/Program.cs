@@ -1,3 +1,4 @@
+using System.Reflection;
 using backend.Helper;
 using backend.Interfaces;
 using backend.Models;
@@ -5,13 +6,23 @@ using backend.Models.Requests;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen()
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0.1",
+        Title = "Todo API",
+        Description = "Angular Dotnet Todo API"
+    });
+});
 
 // Interface Config
 builder.Services.AddScoped<IUserServices, UserServices>();
@@ -47,8 +58,9 @@ app.UseCors(policy =>
 // Middleware Config
 app.UseMiddleware<JwtMiddleware>();
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

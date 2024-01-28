@@ -1,4 +1,4 @@
-namespace TodoApi.Models.Response;
+namespace backend.Models.Response;
 public class GetAllTodoResponse
 {
     public int? id { get; set; }

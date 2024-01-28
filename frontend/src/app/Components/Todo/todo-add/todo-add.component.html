@@ -1,42 +1,22 @@
 <div container-fluid>
   <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
     <div class="form-floating mb-3">
-      <input
-        formControlName="title"
-        type="text"
-        class="form-control"
-        name="title"
-        placeholder="Title"
-        [ngClass]="{
+      <input formControlName="title" type="text" class="form-control" name="title" placeholder="Title" [ngClass]="{
           'is-invalid': submitted && todoForm.controls['title'].errors
-        }"
-      />
+        }" />
       <label for="title">Enter Todo Title</label>
-      <div
-        *ngIf="submitted && todoForm.controls['title'].errors"
-        class="text-danger"
-      >
+      <div *ngIf="submitted && todoForm.controls['title'].errors" class="text-danger">
         <div *ngIf="submitted && todoForm.controls['title'].errors['required']">
           Title is required.
         </div>
       </div>
     </div>
     <div class="form-floating">
-      <input
-        formControlName="desc"
-        type="text"
-        class="form-control"
-        name="desc"
-        placeholder="Desciption"
-        [ngClass]="{
+      <input formControlName="desc" type="text" class="form-control" name="desc" placeholder="Desciption" [ngClass]="{
           'is-invalid': submitted && todoForm.controls['desc'].errors
-        }"
-      />
+        }" />
       <label for="floatingPassword">Enter Todo Description</label>
-      <div
-        *ngIf="submitted && todoForm.controls['desc'].errors"
-        class="text-danger"
-      >
+      <div *ngIf="submitted && todoForm.controls['desc'].errors" class="text-danger">
         <div *ngIf="submitted && todoForm.controls['desc'].errors['required']">
           Desciption is required.
         </div>
