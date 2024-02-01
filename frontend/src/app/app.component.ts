@@ -19,7 +19,12 @@ export class AppComponent {
   private baseUrl = 'https://localhost:7101';
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  constructor(private http: HttpClient, private searchService: TodoSearchService) { }
+  constructor(private http: HttpClient, private searchService: TodoSearchService) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: `Bearer ${token}` });
+    }
+  }
 
   private getFullUrl(url: string): string {
     return `${this.baseUrl}/${url}`;
