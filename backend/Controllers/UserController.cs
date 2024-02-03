@@ -24,10 +24,11 @@ public class UserController : ControllerBase
     [HttpPost, Route("register")]
     public async Task<IActionResult> Register([Required, FromBody] RegisterRequest request)
     {
-        return Ok(await _userServices.Register(request));
+        // return status code as 201
+        return Created("", await _userServices.Register(request));
     }
 
-    [HttpPost, Route("logout")]
+    [HttpGet, Route("logout")]
     public async Task<IActionResult> Logout()
     {
         await _userServices.Logout();

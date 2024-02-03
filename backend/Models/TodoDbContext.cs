@@ -20,6 +20,10 @@ public class TodoDbContext : DbContext
             .WithMany(u => u.Todos)
             .HasForeignKey(t => t.CreatedBy)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Users>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
 
         base.OnModelCreating(modelBuilder);
     }

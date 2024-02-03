@@ -1,0 +1,19 @@
+.container-login {
+    background-color: grey;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    padding: 10px;
+    width: 350px;
+}
+
+.card .btn {
+    align-items: center;
+    justify-content: center;
+}

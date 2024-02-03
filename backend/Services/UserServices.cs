@@ -42,6 +42,8 @@ public class UserServices : IUserServices
 
     public async Task<RegisterResponse> Register(RegisterRequest request)
     {
+        if (await _context.Users!.AnyAsync(u => u.Username == request.username))
+            throw new Exception("Username is already taken");
         var user = new Users
         {
             Username = request.username,
@@ -61,7 +63,8 @@ public class UserServices : IUserServices
             Username = user.Username,
             Name = user.Name,
             IsActive = user.IsActive,
-            CreatedAt = user.CreatedAt
+            CreatedAt = user.CreatedAt,
+            Message = "User created successfully"
         };
     }
 

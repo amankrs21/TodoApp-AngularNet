@@ -1,0 +1,61 @@
+<div class="container-login">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-3">Register Here...</h4>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="form-floating mb-3">
+                    <input formControlName="name" type="text" class="form-control" name="name" placeholder="Name"
+                        [ngClass]="{
+                'is-invalid': submitted && registerForm.controls['name'].errors
+              }" />
+                    <label for="username">Enter Full Name</label>
+                    <div *ngIf="submitted && registerForm.controls['name'].errors" class="text-danger">
+                        <div *ngIf="
+                  submitted && registerForm.controls['name'].errors['required']
+                ">
+                            Name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input formControlName="username" type="text" class="form-control" name="username"
+                        placeholder="Username" [ngClass]="{
+                'is-invalid': submitted && registerForm.controls['username'].errors
+              }" />
+                    <label for="username">Enter Username</label>
+                    <div *ngIf="submitted && registerForm.controls['username'].errors" class="text-danger">
+                        <div *ngIf="
+                  submitted && registerForm.controls['username'].errors['required']
+                ">
+                            Username is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input formControlName="password" type="password" class="form-control" name="password"
+                        placeholder="Password" [ngClass]="{
+                'is-invalid': submitted && registerForm.controls['password'].errors
+              }" />
+                    <label for="password">Enter Password</label>
+                    <div *ngIf="submitted && registerForm.controls['password'].errors" class="text-danger">
+                        <div *ngIf="
+                  submitted && registerForm.controls['password'].errors['required']
+                ">
+                            Password is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-outline-primary mt-1" type="submit">
+                        Register
+                    </button>
+                </div>
+                <div class="text-center mt-4">
+                    <h6>Already have an Account ?<br />
+                        <a class="card-link" routerLink="/login">Login Yourself</a>
+                    </h6>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
